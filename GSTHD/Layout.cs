@@ -474,6 +474,7 @@ namespace GSTHD
         public int Y { get; set; }
         public Size Size { get; set; }
         public bool Visible { get; set; }
+        public bool Looping { get; set; }
         public string[] ImageCollection { get; set; }
         public string[] TinyImageCollection { get; set; }
     }

@@ -13,6 +13,7 @@ namespace GSTHD
 
         private string[] ImageNames;
         private int ImageIndex = 0;
+        private bool Loops = true;
 
         public Item(ObjectPoint data, Settings settings)
         {
@@ -25,6 +26,7 @@ namespace GSTHD
 
             Name = data.Name;
             BackColor = Color.Transparent;
+            Loops = data.Looping;
 
             if (ImageNames.Length > 0)
             {
@@ -52,8 +54,8 @@ namespace GSTHD
             {
                 var scrolls = e.Delta / SystemInformation.MouseWheelScrollDelta;
                 ImageIndex += Settings.InvertScrollWheel ? scrolls : -scrolls;
-                if (ImageIndex < 0) ImageIndex = 0;
-                else if (ImageIndex >= ImageNames.Length) ImageIndex = ImageNames.Length - 1;
+                if (ImageIndex < 0) ImageIndex = (Loops ? ImageNames.Length - 1 : 0);
+                else if (ImageIndex >= ImageNames.Length) ImageIndex = (Loops ? 0 : ImageNames.Length - 1);
                 UpdateImage();
             }
         }
@@ -77,12 +79,14 @@ namespace GSTHD
         public void IncrementState()
         {
             if (ImageIndex < ImageNames.Length - 1) ImageIndex += 1;
+            else if (ImageIndex >= ImageNames.Length - 1) ImageIndex = (Loops ? 0 : ImageNames.Length - 1);
             UpdateImage();
         }
 
         public void DecrementState()
         {
             if (ImageIndex > 0) ImageIndex -= 1;
+            else if (ImageIndex <= 0) ImageIndex = (Loops ? ImageNames.Length - 1 : 0);
             UpdateImage();
         }
 
